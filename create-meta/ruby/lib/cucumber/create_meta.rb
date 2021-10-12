@@ -52,7 +52,7 @@ module Cucumber
           revision: evaluate(ci_system["git"]["revision"], env),
           branch: evaluate(ci_system["git"]["branch"], env),
           tag: evaluate(ci_system["git"]["tag"], env)
-        }.delete_if { |k, v| v.nil? }
+        }.delete_if { |_k, v| v.nil? }
       }
     end
 

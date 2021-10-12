@@ -1,4 +1,4 @@
-require 'cucumber/cucumber_expressions/errors'
+require "cucumber/cucumber_expressions/errors"
 
 module Cucumber
   module CucumberExpressions
@@ -57,11 +57,10 @@ module Cucumber
       def <=>(other)
         return -1 if prefer_for_regexp_match? && !other.prefer_for_regexp_match?
         return 1 if other.prefer_for_regexp_match? && !prefer_for_regexp_match?
-        return name <=> other.name
+        name <=> other.name
       end
 
       private
-
 
       def string_array(regexps)
         array = regexps.is_a?(Array) ? regexps : [regexps]
@@ -70,9 +69,9 @@ module Cucumber
 
       def regexp_source(regexp)
         [
-            'EXTENDED',
-            'IGNORECASE',
-            'MULTILINE'
+          "EXTENDED",
+          "IGNORECASE",
+          "MULTILINE"
         ].each do |option_name|
           option = Regexp.const_get(option_name)
           if regexp.options & option != 0

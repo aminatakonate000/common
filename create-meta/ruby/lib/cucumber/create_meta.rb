@@ -1,8 +1,8 @@
-require 'uri'
-require 'sys/uname'
-require 'json'
-require 'cucumber/messages'
-require 'cucumber/create_meta/variable_expression'
+require "uri"
+require "sys/uname"
+require "json"
+require "cucumber/messages"
+require "cucumber/create_meta/variable_expression"
 
 module Cucumber
   module CreateMeta
@@ -11,23 +11,23 @@ module Cucumber
 
     def create_meta(tool_name, tool_version, env = ENV)
       {
-          protocol_version: Cucumber::Messages::VERSION,
-          implementation: {
-              name: tool_name,
-              version: tool_version
-          },
-          runtime: {
-              name: RUBY_ENGINE,
-              version: RUBY_VERSION
-          },
-          os: {
-              name: RbConfig::CONFIG['target_os'],
-              version: Sys::Uname.uname.version
-          },
-          cpu: {
-              name: RbConfig::CONFIG['target_cpu']
-          },
-          ci: detect_ci(env)
+        protocol_version: Cucumber::Messages::VERSION,
+        implementation: {
+          name: tool_name,
+          version: tool_version
+        },
+        runtime: {
+          name: RUBY_ENGINE,
+          version: RUBY_VERSION
+        },
+        os: {
+          name: RbConfig::CONFIG["target_os"],
+          version: Sys::Uname.uname.version
+        },
+        cpu: {
+          name: RbConfig::CONFIG["target_cpu"]
+        },
+        ci: detect_ci(env)
       }
     end
 
@@ -40,19 +40,19 @@ module Cucumber
     end
 
     def create_ci(ci_name, ci_system, env)
-      url = evaluate(ci_system['url'], env)
+      url = evaluate(ci_system["url"], env)
       return nil if url.nil?
 
       {
-          url: url,
-          name: ci_name,
-          buildNumber: evaluate(ci_system['buildNumber'], env),
-          git: {
-              remote: remove_userinfo_from_url(evaluate(ci_system['git']['remote'], env)),
-              revision: evaluate(ci_system['git']['revision'], env),
-              branch: evaluate(ci_system['git']['branch'], env),
-              tag: evaluate(ci_system['git']['tag'], env),
-          }.delete_if {|k,v| v.nil?}
+        url: url,
+        name: ci_name,
+        buildNumber: evaluate(ci_system["buildNumber"], env),
+        git: {
+          remote: remove_userinfo_from_url(evaluate(ci_system["git"]["remote"], env)),
+          revision: evaluate(ci_system["git"]["revision"], env),
+          branch: evaluate(ci_system["git"]["branch"], env),
+          tag: evaluate(ci_system["git"]["tag"], env)
+        }.delete_if { |k, v| v.nil? }
       }
     end
 
@@ -60,7 +60,7 @@ module Cucumber
       return nil if value.nil?
       begin
         uri = URI(value)
-        uri.userinfo = ''
+        uri.userinfo = ""
         uri.to_s
       rescue
         value

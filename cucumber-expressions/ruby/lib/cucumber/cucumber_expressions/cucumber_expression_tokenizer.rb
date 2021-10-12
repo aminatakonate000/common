@@ -1,5 +1,5 @@
-require 'cucumber/cucumber_expressions/ast'
-require 'cucumber/cucumber_expressions/errors'
+require "cucumber/cucumber_expressions/ast"
+require "cucumber/cucumber_expressions/errors"
 
 module Cucumber
   module CucumberExpressions
@@ -16,7 +16,7 @@ module Cucumber
         codepoints = expression.codepoints
 
         if codepoints.empty?
-          tokens.push(Token.new(TokenType::START_OF_LINE, '', 0, 0))
+          tokens.push(Token.new(TokenType::START_OF_LINE, "", 0, 0))
         end
 
         codepoints.each do |codepoint|
@@ -46,7 +46,7 @@ module Cucumber
 
         raise TheEndOfLineCannotBeEscaped.new(expression) if treat_as_text
 
-        tokens.push(Token.new(TokenType::END_OF_LINE, '', codepoints.length, codepoints.length))
+        tokens.push(Token.new(TokenType::END_OF_LINE, "", codepoints.length, codepoints.length))
         tokens
       end
 
@@ -63,10 +63,10 @@ module Cucumber
 
         consumed_index = @buffer_start_index + @buffer.length + escape_tokens
         t = Token.new(
-            token_type,
-            @buffer.map { |codepoint| codepoint.chr(Encoding::UTF_8) }.join(''),
-            @buffer_start_index,
-            consumed_index
+          token_type,
+          @buffer.map { |codepoint| codepoint.chr(Encoding::UTF_8) }.join(""),
+          @buffer_start_index,
+          consumed_index
         )
         @buffer = []
         @buffer_start_index = consumed_index
@@ -81,14 +81,14 @@ module Cucumber
           return TokenType::TEXT
         end
         raise CantEscape.new(
-            @expression,
-            @buffer_start_index + @buffer.length + @escaped
+          @expression,
+          @buffer_start_index + @buffer.length + @escaped
         )
       end
 
       def should_create_new_token?(previous_token_type, current_token_type)
         current_token_type != previous_token_type ||
-            (current_token_type != TokenType::WHITE_SPACE && current_token_type != TokenType::TEXT)
+          (current_token_type != TokenType::WHITE_SPACE && current_token_type != TokenType::TEXT)
       end
     end
   end

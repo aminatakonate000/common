@@ -1,15 +1,15 @@
-require 'cucumber/messages'
+require "cucumber/messages"
 
 module Cucumber
   module Messages
-    describe 'messages' do
+    describe "messages" do
       let(:outgoing_messages) do
         [
           Envelope.new(
-            source: Source.new(data: 'Feature: Hello')
+            source: Source.new(data: "Feature: Hello")
           ),
           Envelope.new(
-            attachment: Attachment.new(body: 'Hello', content_encoding: AttachmentContentEncoding::IDENTITY)
+            attachment: Attachment.new(body: "Hello", content_encoding: AttachmentContentEncoding::IDENTITY)
           )
         ]
       end
@@ -37,12 +37,12 @@ module Cucumber
 
       it "includes offending line in error message" do
         io = StringIO.new
-        io.puts('BLA BLA')
+        io.puts("BLA BLA")
 
         io.rewind
         incoming_messages = NdjsonToMessageEnumerator.new(io)
 
-        expect { incoming_messages.to_a }.to(raise_error('Not JSON: BLA BLA'))
+        expect { incoming_messages.to_a }.to(raise_error("Not JSON: BLA BLA"))
       end
 
       def write_outgoing_messages(messages, out)

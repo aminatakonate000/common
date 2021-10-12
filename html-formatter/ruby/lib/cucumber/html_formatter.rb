@@ -1,6 +1,6 @@
-require 'cucumber/messages'
-require 'cucumber/html_formatter/template_writer'
-require 'cucumber/html_formatter/assets_loader'
+require "cucumber/messages"
+require "cucumber/html_formatter/template_writer"
+require "cucumber/html_formatter/assets_loader"
 
 module Cucumber
   module HTMLFormatter
@@ -28,7 +28,7 @@ module Cucumber
 
       def write_message(message)
         unless @first_message
-          out.puts(',')
+          out.puts(",")
         end
         out.print(message.to_json)
 
@@ -47,17 +47,17 @@ module Cucumber
 
       def pre_message
         [
-          template_writer.write_between(nil, '{{css}}'),
+          template_writer.write_between(nil, "{{css}}"),
           assets_loader.css,
-          template_writer.write_between('{{css}}', '{{messages}}')
+          template_writer.write_between("{{css}}", "{{messages}}")
         ].join("\n")
       end
 
       def post_message
         [
-          template_writer.write_between('{{messages}}', '{{script}}'),
+          template_writer.write_between("{{messages}}", "{{script}}"),
           assets_loader.script,
-          template_writer.write_between('{{script}}', nil)
+          template_writer.write_between("{{script}}", nil)
         ].join("\n")
       end
 

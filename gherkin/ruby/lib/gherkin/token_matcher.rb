@@ -1,11 +1,11 @@
-require_relative 'dialect'
-require_relative 'errors'
+require_relative "dialect"
+require_relative "errors"
 
 module Gherkin
   class TokenMatcher
     LANGUAGE_PATTERN = /^\s*#\s*language\s*:\s*([a-zA-Z\-_]+)\s*$/
 
-    def initialize(dialect_name = 'en')
+    def initialize(dialect_name = "en")
       @default_dialect_name = dialect_name
       change_dialect(dialect_name, nil)
       reset
@@ -18,7 +18,7 @@ module Gherkin
     end
 
     def match_TagLine(token)
-      return false unless token.line.start_with?('@')
+      return false unless token.line.start_with?("@")
 
       set_token_matched(token, :TagLine, nil, nil, nil, token.line.tags)
       true
@@ -34,7 +34,7 @@ module Gherkin
 
     def match_ScenarioLine(token)
       match_title_line(token, :ScenarioLine, @dialect.scenario_keywords) ||
-          match_title_line(token, :ScenarioLine, @dialect.scenario_outline_keywords)
+        match_title_line(token, :ScenarioLine, @dialect.scenario_outline_keywords)
     end
 
     def match_BackgroundLine(token)
@@ -46,7 +46,7 @@ module Gherkin
     end
 
     def match_TableRow(token)
-      return false unless token.line.start_with?('|')
+      return false unless token.line.start_with?("|")
       # TODO: indent
       set_token_matched(token, :TableRow, nil, nil, nil, token.line.table_cells)
       true
@@ -59,8 +59,8 @@ module Gherkin
     end
 
     def match_Comment(token)
-      return false unless token.line.start_with?('#')
-      text = token.line.get_line_text(0) #take the entire line, including leading space
+      return false unless token.line.start_with?("#")
+      text = token.line.get_line_text(0) # take the entire line, including leading space
       set_token_matched(token, :Comment, text, nil, 0)
       true
     end
@@ -80,7 +80,7 @@ module Gherkin
       if @active_doc_string_separator.nil?
         # open
         _match_DocStringSeparator(token, '"""', true) ||
-            _match_DocStringSeparator(token, '```', true)
+          _match_DocStringSeparator(token, "```", true)
       else
         # close
         _match_DocStringSeparator(token, @active_doc_string_separator, false)
@@ -118,10 +118,10 @@ module Gherkin
 
     def match_StepLine(token)
       keywords = @dialect.given_keywords +
-          @dialect.when_keywords +
-          @dialect.then_keywords +
-          @dialect.and_keywords +
-          @dialect.but_keywords
+        @dialect.when_keywords +
+        @dialect.then_keywords +
+        @dialect.and_keywords +
+        @dialect.but_keywords
 
       keyword = keywords.detect { |k| token.line.start_with?(k) }
 
@@ -129,7 +129,7 @@ module Gherkin
 
       title = token.line.get_rest_trimmed(keyword.length)
       set_token_matched(token, :StepLine, title, keyword)
-      return true
+      true
     end
 
     private
@@ -147,7 +147,7 @@ module Gherkin
 
       return false unless keyword
 
-      title = token.line.get_rest_trimmed(keyword.length + ':'.length)
+      title = token.line.get_rest_trimmed(keyword.length + ":".length)
       set_token_matched(token, token_type, title, keyword)
       true
     end

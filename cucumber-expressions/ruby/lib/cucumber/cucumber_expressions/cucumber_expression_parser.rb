@@ -1,6 +1,6 @@
-require 'cucumber/cucumber_expressions/ast'
-require 'cucumber/cucumber_expressions/errors'
-require 'cucumber/cucumber_expressions/cucumber_expression_tokenizer'
+require "cucumber/cucumber_expressions/ast"
+require "cucumber/cucumber_expressions/errors"
+require "cucumber/cucumber_expressions/cucumber_expression_tokenizer"
 
 module Cucumber
   module CucumberExpressions
@@ -42,20 +42,20 @@ module Cucumber
 
         # parameter := '{' + name* + '}'
         parse_parameter = parse_between(
-            NodeType::PARAMETER,
-            TokenType::BEGIN_PARAMETER,
-            TokenType::END_PARAMETER,
-            [parse_name]
+          NodeType::PARAMETER,
+          TokenType::BEGIN_PARAMETER,
+          TokenType::END_PARAMETER,
+          [parse_name]
         )
 
         # optional := '(' + option* + ')'
         # option := optional | parameter | text
         optional_sub_parsers = []
         parse_optional = parse_between(
-            NodeType::OPTIONAL,
-            TokenType::BEGIN_OPTIONAL,
-            TokenType::END_OPTIONAL,
-            optional_sub_parsers
+          NodeType::OPTIONAL,
+          TokenType::BEGIN_OPTIONAL,
+          TokenType::END_OPTIONAL,
+          optional_sub_parsers
         )
         optional_sub_parsers << parse_optional << parse_parameter << parse_text
 
@@ -69,10 +69,10 @@ module Cucumber
         end
 
         alternative_parsers = [
-            parse_alternative_separator,
-            parse_optional,
-            parse_parameter,
-            parse_text,
+          parse_alternative_separator,
+          parse_optional,
+          parse_parameter,
+          parse_text
         ]
 
         # alternation := (?<=left-boundary) + alternative* + ( '/' + alternative* )+ + (?=right-boundary)
@@ -101,10 +101,10 @@ module Cucumber
         # cucumber-expression :=  ( alternation | optional | parameter | text )*
         #
         parse_cucumber_expression = parse_between(
-            NodeType::EXPRESSION,
-            TokenType::START_OF_LINE,
-            TokenType::END_OF_LINE,
-            [parse_alternation, parse_optional, parse_parameter, parse_text]
+          NodeType::EXPRESSION,
+          TokenType::START_OF_LINE,
+          TokenType::END_OF_LINE,
+          [parse_alternation, parse_optional, parse_parameter, parse_text]
         )
 
         tokenizer = CucumberExpressionTokenizer.new
@@ -143,14 +143,14 @@ module Cucumber
           return consumed, ast unless consumed == 0
         end
         # If configured correctly this will never happen
-        raise 'No eligible parsers for ' + tokens
+        raise "No eligible parsers for " + tokens
       end
 
       def parse_tokens_until(expression, parsers, tokens, start_at, end_tokens)
         current = start_at
         size = tokens.length
         ast = []
-        while current < size do
+        while current < size
           if looking_at_any(tokens, current, end_tokens)
             break
           end
@@ -158,7 +158,7 @@ module Cucumber
           if consumed == 0
             # If configured correctly this will never happen
             # Keep to avoid infinite loops
-            raise 'No eligible parsers for ' + tokens
+            raise "No eligible parsers for " + tokens
           end
           current += consumed
           ast += sub_ast

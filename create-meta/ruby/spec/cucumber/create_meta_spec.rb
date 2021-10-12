@@ -1,12 +1,12 @@
-require 'cucumber/create_meta'
+require "cucumber/create_meta"
 
-describe 'create_meta' do
-  it 'generates a Meta message with platform information' do
-    meta = Cucumber::CreateMeta.create_meta('cucumba-ruby', 'X.Y.Z')
+describe "create_meta" do
+  it "generates a Meta message with platform information" do
+    meta = Cucumber::CreateMeta.create_meta("cucumba-ruby", "X.Y.Z")
 
     expect(meta[:protocol_version]).to match(/\d+\.\d+\.\d+/)
-    expect(meta[:implementation][:name]).to eq('cucumba-ruby')
-    expect(meta[:implementation][:version]).to eq('X.Y.Z')
+    expect(meta[:implementation][:name]).to eq("cucumba-ruby")
+    expect(meta[:implementation][:version]).to eq("X.Y.Z")
     expect(meta[:runtime][:name]).to match(/(jruby|ruby)/)
     expect(meta[:runtime][:version]).to eq(RUBY_VERSION)
     expect(meta[:os][:name]).to match(/.+/)

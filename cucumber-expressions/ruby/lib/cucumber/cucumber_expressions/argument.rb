@@ -1,5 +1,5 @@
-require 'cucumber/cucumber_expressions/group'
-require 'cucumber/cucumber_expressions/errors'
+require "cucumber/cucumber_expressions/group"
+require "cucumber/cucumber_expressions/errors"
 
 module Cucumber
   module CucumberExpressions
@@ -14,7 +14,7 @@ module Cucumber
 
         if arg_groups.length != parameter_types.length
           raise CucumberExpressionError.new(
-              "Expression #{tree_regexp.regexp.inspect} has #{arg_groups.length} capture groups (#{arg_groups.map(&:value)}), but there were #{parameter_types.length} parameter types (#{parameter_types.map(&:name)})"
+            "Expression #{tree_regexp.regexp.inspect} has #{arg_groups.length} capture groups (#{arg_groups.map(&:value)}), but there were #{parameter_types.length} parameter types (#{parameter_types.map(&:name)})"
           )
         end
 
@@ -27,7 +27,7 @@ module Cucumber
         @group, @parameter_type = group, parameter_type
       end
 
-      def value(self_obj=:nil)
+      def value(self_obj = :nil)
         raise "No self_obj" if self_obj == :nil
         group_values = @group ? @group.values : nil
         @parameter_type.transform(self_obj, group_values)

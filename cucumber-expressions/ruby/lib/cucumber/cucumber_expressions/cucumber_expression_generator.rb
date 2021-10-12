@@ -1,6 +1,6 @@
-require 'cucumber/cucumber_expressions/parameter_type_matcher'
-require 'cucumber/cucumber_expressions/generated_expression'
-require 'cucumber/cucumber_expressions/combinatorial_generated_expression_factory'
+require "cucumber/cucumber_expressions/parameter_type_matcher"
+require "cucumber/cucumber_expressions/generated_expression"
+require "cucumber/cucumber_expressions/combinatorial_generated_expression_factory"
 
 module Cucumber
   module CucumberExpressions
@@ -70,7 +70,7 @@ module Cucumber
         ).generate_expressions
       end
 
-    private
+      private
 
       def create_parameter_type_matchers(text)
         parameter_matchers = []
@@ -91,10 +91,10 @@ module Cucumber
       end
 
       def escape(s)
-        s.gsub(/%/, '%%')
-        .gsub(/\(/, '\\(')
-        .gsub(/{/, '\\{')
-        .gsub(/\//, '\\/')
+        s.gsub(/%/, "%%")
+          .gsub(/\(/, '\\(')
+          .gsub(/{/, '\\{')
+          .gsub(/\//, '\\/')
       end
     end
   end

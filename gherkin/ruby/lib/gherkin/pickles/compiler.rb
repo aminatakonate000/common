@@ -102,7 +102,6 @@ module Gherkin
               ]
             )
             pickles.push(pickle)
-
           end
         end
       end
@@ -110,7 +109,7 @@ module Gherkin
       def interpolate(name, variable_cells, value_cells)
         variable_cells.each_with_index do |variable_cell, n|
           value_cell = value_cells[n]
-          name = name.gsub('<' + variable_cell.value + '>', value_cell.value)
+          name = name.gsub("<" + variable_cell.value + ">", value_cell.value)
         end
         name
       end
@@ -130,7 +129,7 @@ module Gherkin
         props = {
           id: @id_generator.new_id,
           ast_node_ids: [step.id],
-          text: interpolate(step.text, variable_cells, value_cells),
+          text: interpolate(step.text, variable_cells, value_cells)
         }
         if values_row
           props[:ast_node_ids].push(values_row.id)
@@ -176,7 +175,7 @@ module Gherkin
       end
 
       def pickle_tags(tags)
-        tags.map {|tag| pickle_tag(tag)}
+        tags.map { |tag| pickle_tag(tag) }
       end
 
       def pickle_tag(tag)

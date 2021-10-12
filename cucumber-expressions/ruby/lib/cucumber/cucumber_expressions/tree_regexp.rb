@@ -1,5 +1,5 @@
-require 'cucumber/cucumber_expressions/group_builder'
-require 'cucumber/cucumber_expressions/errors'
+require "cucumber/cucumber_expressions/group_builder"
+require "cucumber/cucumber_expressions/errors"
 
 module Cucumber
   module CucumberExpressions
@@ -20,12 +20,12 @@ module Cucumber
 
       private def is_non_capturing(source, i)
         # Regex is valid. Bounds check not required.
-        if source[i+1] != '?'
+        if source[i + 1] != "?"
           # (X)
           return false
         end
 
-        if source[i+2] != '<'
+        if source[i + 2] != "<"
           # (?:X)
           # (?idmsuxU-idmsuxU)
           # (?idmsux-idmsux:X)
@@ -35,7 +35,7 @@ module Cucumber
           return true
         end
 
-        if source[i+3] == '=' || source[i+3] == '!'
+        if source[i + 3] == "=" || source[i + 3] == "!"
           # (?<=X)
           # (?<!X)
           return true
@@ -52,11 +52,11 @@ module Cucumber
         escaping = false
         char_class = false
         source.each_char.with_index do |c, i|
-          if c == '[' && !escaping
+          if c == "[" && !escaping
             char_class = true
-          elsif c == ']' && !escaping
+          elsif c == "]" && !escaping
             char_class = false
-          elsif c == '(' && !escaping && !char_class
+          elsif c == "(" && !escaping && !char_class
             group_start_stack.push(i)
             group_builder = GroupBuilder.new
             non_capturing = is_non_capturing(source, i)
@@ -64,7 +64,7 @@ module Cucumber
               group_builder.set_non_capturing!
             end
             stack.push(group_builder)
-          elsif c == ')' && !escaping && !char_class
+          elsif c == ")" && !escaping && !char_class
             gb = stack.pop
             group_start = group_start_stack.pop
             if gb.capturing?
@@ -74,7 +74,7 @@ module Cucumber
               gb.move_children_to(stack.last)
             end
           end
-          escaping = c == '\\' && !escaping
+          escaping = c == "\\" && !escaping
         end
         stack.pop
       end

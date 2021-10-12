@@ -1,15 +1,15 @@
-require 'cucumber/messages'
+require "cucumber/messages"
 
 class CucumberDemoFormatter
   def process_messages(message_enumerator, output)
     emoji = {
-      'UNKNOWN'   => '👽',
-      'PASSED'    => '😃',
-      'SKIPPED'   => '🥶',
-      'PENDING'   => '⏰',
-      'UNDEFINED' => '🤷',
-      'AMBIGUOUS' => '🦄',
-      'FAILED'    => '💣',
+      "UNKNOWN" => "👽",
+      "PASSED" => "😃",
+      "SKIPPED" => "\u{1F976}",
+      "PENDING" => "⏰",
+      "UNDEFINED" => "🤷",
+      "AMBIGUOUS" => "🦄",
+      "FAILED" => "💣"
     }
     message_enumerator.each do |message|
       if message.test_step_finished

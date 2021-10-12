@@ -1,7 +1,7 @@
-require 'cucumber/cucumber_expressions/cucumber_expression_generator'
-require 'cucumber/cucumber_expressions/cucumber_expression'
-require 'cucumber/cucumber_expressions/parameter_type'
-require 'cucumber/cucumber_expressions/parameter_type_registry'
+require "cucumber/cucumber_expressions/cucumber_expression_generator"
+require "cucumber/cucumber_expressions/cucumber_expression"
+require "cucumber/cucumber_expressions/parameter_type"
+require "cucumber/cucumber_expressions/parameter_type_registry"
 
 module Cucumber
   module CucumberExpressions
@@ -32,64 +32,73 @@ module Cucumber
       it "generates expression with escaped left parenthesis" do
         assert_expression(
           "\\(iii)", [],
-          "(iii)")
+          "(iii)"
+        )
       end
 
       it "generates expression with escaped left curly brace" do
         assert_expression(
           "\\{iii}", [],
-          "{iii}")
+          "{iii}"
+        )
       end
 
       it "generates expression with escaped slashes" do
         assert_expression(
           "The {int}\\/{int}\\/{int} hey", ["int", "int2", "int3"],
-          "The 1814/05/17 hey")
+          "The 1814/05/17 hey"
+        )
       end
 
       it "generates expression for int float arg" do
         assert_expression(
           "I have {int} cukes and {float} euro", ["int", "float"],
-          "I have 2 cukes and 1.5 euro")
+          "I have 2 cukes and 1.5 euro"
+        )
       end
 
       it "generates expression for strings" do
         assert_expression(
-            "I like {string} and {string}", ["string", "string2"],
-            'I like "bangers" and \'mash\'')
+          "I like {string} and {string}", ["string", "string2"],
+          'I like "bangers" and \'mash\''
+        )
       end
 
       it "generates expression with % sign" do
         assert_expression(
-            "I am {int}% foobar", ["int"],
-            'I am 20% foobar')
+          "I am {int}% foobar", ["int"],
+          "I am 20% foobar"
+        )
       end
 
       it "generates expression for just int" do
         assert_expression(
           "{int}", ["int"],
-          "99999")
+          "99999"
+        )
       end
 
       it "numbers only second argument when builtin type is not reserved keyword" do
         assert_expression(
           "I have {int} cukes and {int} euro", ["int", "int2"],
-          "I have 2 cukes and 5 euro")
+          "I have 2 cukes and 5 euro"
+        )
       end
 
       it "numbers only second argument when type is not reserved keyword" do
         @parameter_type_registry.define_parameter_type(ParameterType.new(
-          'currency',
-          '[A-Z]{3}',
+          "currency",
+          "[A-Z]{3}",
           Currency,
-          lambda {|s| Currency.new(s)},
+          lambda { |s| Currency.new(s) },
           true,
           true
         ))
 
         assert_expression(
           "I have a {currency} account and a {currency} account", ["currency", "currency2"],
-          "I have a EUR account and a GBP account")
+          "I have a EUR account and a GBP account"
+        )
       end
 
       it "exposes parameters in generated expression" do
@@ -100,20 +109,20 @@ module Cucumber
 
       it "matches parameter types with optional capture groups" do
         @parameter_type_registry.define_parameter_type(ParameterType.new(
-            'optional-flight',
-            /(1st flight)?/,
-            String,
-            lambda {|s| s},
-            true,
-            false
+          "optional-flight",
+          /(1st flight)?/,
+          String,
+          lambda { |s| s },
+          true,
+          false
         ))
         @parameter_type_registry.define_parameter_type(ParameterType.new(
-            'optional-hotel',
-            /(1 hotel)?/,
-            String,
-            lambda {|s| s},
-            true,
-            false
+          "optional-hotel",
+          /(1 hotel)?/,
+          String,
+          lambda { |s| s },
+          true,
+          false
         ))
 
         expression = @generator.generate_expressions("I reach Stage 4: 1st flight -1 hotel")[0]
@@ -123,14 +132,14 @@ module Cucumber
       end
 
       it "generates at most 256 expressions" do
-        for i in 0..3
+        (0..3).each do |i|
           @parameter_type_registry.define_parameter_type(ParameterType.new(
-              "my-type-#{i}",
-              /([a-z] )*?[a-z]/,
-              String,
-              lambda {|s| s},
-              true,
-              false
+            "my-type-#{i}",
+            /([a-z] )*?[a-z]/,
+            String,
+            lambda { |s| s },
+            true,
+            false
           ))
         end
         # This would otherwise generate 4^11=4194300 expressions and consume just shy of 1.5GB.
@@ -140,20 +149,20 @@ module Cucumber
 
       it "prefers expression with longest non empty match" do
         @parameter_type_registry.define_parameter_type(ParameterType.new(
-            'zero-or-more',
-            /[a-z]*/,
-            String,
-            lambda {|s| s},
-            true,
-            false
+          "zero-or-more",
+          /[a-z]*/,
+          String,
+          lambda { |s| s },
+          true,
+          false
         ))
         @parameter_type_registry.define_parameter_type(ParameterType.new(
-            'exactly-one',
-            /[a-z]/,
-            String,
-            lambda {|s| s},
-            true,
-            false
+          "exactly-one",
+          /[a-z]/,
+          String,
+          lambda { |s| s },
+          true,
+          false
         ))
 
         expressions = @generator.generate_expressions("a simple step")
@@ -165,12 +174,12 @@ module Cucumber
       context "does not suggest parameter when match is" do
         before do
           @parameter_type_registry.define_parameter_type(ParameterType.new(
-              'direction',
-              /(up|down)/,
-              String,
-              lambda {|s| s},
-              true,
-              false
+            "direction",
+            /(up|down)/,
+            String,
+            lambda { |s| s },
+            true,
+            false
           ))
         end
 
@@ -193,12 +202,12 @@ module Cucumber
       context "does suggest parameter when match is" do
         before do
           @parameter_type_registry.define_parameter_type(ParameterType.new(
-              'direction',
-              /(up|down)/,
-              String,
-              lambda {|s| s},
-              true,
-              false
+            "direction",
+            /(up|down)/,
+            String,
+            lambda { |s| s },
+            true,
+            false
           ))
         end
 
@@ -208,7 +217,7 @@ module Cucumber
           expect(@generator.generate_expression("up the hill, the road goes down").source).to eq("{direction} the hill, the road goes {direction}")
         end
 
-        it 'wrapped around punctuation characters' do
+        it "wrapped around punctuation characters" do
           expect(@generator.generate_expression("When direction is:down").source).to eq("When direction is:{direction}")
           expect(@generator.generate_expression("Then direction is down.").source).to eq("Then direction is {direction}.")
         end

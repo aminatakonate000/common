@@ -14,11 +14,11 @@ module Cucumber
             if pattern.nil?
               value
             else
-              regexp = Regexp.new(pattern.gsub('\/', '/'))
+              regexp = Regexp.new(pattern.gsub('\/', "/"))
               match = value.match(regexp)
               raise "No match for variable #{variable}" if match.nil?
               match[1..-1].each_with_index do |group, i|
-                replacement = replacement.gsub("\\#{i+1}", group)
+                replacement = replacement.gsub("\\#{i + 1}", group)
               end
               replacement
             end
@@ -29,9 +29,9 @@ module Cucumber
       end
 
       def get_value(variable, env)
-        if variable.index('*')
+        if variable.index("*")
           env.each do |name, value|
-            return value if Regexp.new(variable.gsub('*', '.*')) =~ name
+            return value if Regexp.new(variable.gsub("*", ".*"))&.match?(name)
           end
         end
         env[variable]

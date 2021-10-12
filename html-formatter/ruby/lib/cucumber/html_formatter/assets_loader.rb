@@ -2,15 +2,15 @@ module Cucumber
   module HTMLFormatter
     class AssetsLoader
       def template
-        read_asset('index.mustache.html')
+        read_asset("index.mustache.html")
       end
 
       def css
-        read_asset('cucumber-html.css')
+        read_asset("cucumber-html.css")
       end
 
       def script
-        read_asset('cucumber-html.js')
+        read_asset("cucumber-html.js")
       end
 
       private
@@ -24,11 +24,10 @@ module Cucumber
       end
 
       def html_formatter_path
-        Gem.loaded_specs['cucumber-html-formatter'].full_gem_path
+        Gem.loaded_specs["cucumber-html-formatter"].full_gem_path
       rescue
-        '.'
+        "."
       end
-
     end
   end
 end

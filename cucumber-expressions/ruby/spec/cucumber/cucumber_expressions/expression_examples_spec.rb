@@ -1,11 +1,11 @@
-require 'cucumber/cucumber_expressions/cucumber_expression'
-require 'cucumber/cucumber_expressions/regular_expression'
-require 'cucumber/cucumber_expressions/parameter_type_registry'
-require 'json'
+require "cucumber/cucumber_expressions/cucumber_expression"
+require "cucumber/cucumber_expressions/regular_expression"
+require "cucumber/cucumber_expressions/parameter_type_registry"
+require "json"
 
 module Cucumber
   module CucumberExpressions
-    describe 'examples.txt' do
+    describe "examples.txt" do
       def match(expression_text, text)
         expression = expression_text =~ /^\/(.*)\/$/ ?
           RegularExpression.new(Regexp.new($1), ParameterTypeRegistry.new) :
@@ -19,9 +19,9 @@ module Cucumber
       File.open(File.expand_path("../../../../examples.txt", __FILE__), "r:utf-8") do |io|
         chunks = io.read.split(/^---/m)
         chunks.each do |chunk|
-          expression_text, text, expected_args = *chunk.strip.split(/\n/m)
+          expression_text, text, expected_args = *chunk.strip.split("\n")
           it "Works with: #{expression_text}" do
-            expect( match(expression_text, text).to_json ).to eq(expected_args)
+            expect(match(expression_text, text).to_json).to eq(expected_args)
           end
         end
       end

@@ -1,6 +1,6 @@
-require 'cucumber/cucumber_expressions/errors'
-require 'cucumber/cucumber_expressions/cucumber_expression'
-require 'cucumber/cucumber_expressions/regular_expression'
+require "cucumber/cucumber_expressions/errors"
+require "cucumber/cucumber_expressions/cucumber_expression"
+require "cucumber/cucumber_expressions/regular_expression"
 
 module Cucumber
   module CucumberExpressions

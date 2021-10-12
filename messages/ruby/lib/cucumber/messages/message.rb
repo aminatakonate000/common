@@ -1,5 +1,5 @@
-require 'cucumber/messages/message/deserialization'
-require 'cucumber/messages/message/serialization'
+require "cucumber/messages/message/deserialization"
+require "cucumber/messages/message/serialization"
 
 module Cucumber
   module Messages

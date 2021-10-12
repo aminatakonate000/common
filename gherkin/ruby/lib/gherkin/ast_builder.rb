@@ -1,5 +1,5 @@
-require 'cucumber/messages'
-require_relative 'ast_node'
+require "cucumber/messages"
+require_relative "ast_node"
 
 module Gherkin
   class AstBuilder
@@ -99,7 +99,7 @@ module Gherkin
     end
 
     def get_description(node)
-      node.get_single(:Description) || ''
+      node.get_single(:Description) || ""
     end
 
     def get_steps(node)
@@ -123,7 +123,7 @@ module Gherkin
         )
       when :DocString
         separator_token = node.get_tokens(:DocStringSeparator)[0]
-        media_type = separator_token.matched_text == '' ? nil : separator_token.matched_text
+        media_type = separator_token.matched_text == "" ? nil : separator_token.matched_text
         line_tokens = node.get_tokens(:Other)
         content = line_tokens.map { |t| t.matched_text }.join("\n")
 
@@ -195,8 +195,8 @@ module Gherkin
         line_tokens = node.get_tokens(:Other)
         # Trim trailing empty lines
         last_non_empty = line_tokens.rindex { |token| !token.line.trimmed_line_text.empty? }
-        description = line_tokens[0..last_non_empty].map { |token| token.matched_text }.join("\n")
-        return description
+        line_tokens[0..last_non_empty].map { |token| token.matched_text }.join("\n")
+
       when :Feature
         header = node.get_single(:FeatureHeader)
         return unless header
@@ -222,7 +222,7 @@ module Gherkin
           keyword: feature_line.matched_keyword,
           name: feature_line.matched_text,
           description: description,
-          children: children,
+          children: children
         )
       when :Rule
         header = node.get_single(:RuleHeader)
@@ -245,7 +245,7 @@ module Gherkin
           keyword: rule_line.matched_keyword,
           name: rule_line.matched_text,
           description: description,
-          children: children,
+          children: children
         )
       when :GherkinDocument
         feature = node.get_single(:Feature)
@@ -254,7 +254,7 @@ module Gherkin
           feature: feature
         )
       else
-        return node
+        node
       end
     end
   end

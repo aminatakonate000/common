@@ -8,14 +8,13 @@ class Flight
 end
 
 ParameterType(
-  name: 'flight',
+  name: "flight",
   regexp: /([A-Z]{3})-([A-Z]{3})/,
-  transformer: -> (from, to) { Flight.new(from, to) }
+  transformer: ->(from, to) { Flight.new(from, to) }
 )
 
-Given('{flight} has been delayed {int} minutes') do |flight, delay|
-  expect(flight.from).to eq('LHR')
-  expect(flight.to).to eq('CDG')
+Given("{flight} has been delayed {int} minutes") do |flight, delay|
+  expect(flight.from).to eq("LHR")
+  expect(flight.to).to eq("CDG")
   expect(delay).to eq(45)
 end
-

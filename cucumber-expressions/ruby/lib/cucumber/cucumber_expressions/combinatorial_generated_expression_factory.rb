@@ -1,8 +1,7 @@
-require('cucumber/cucumber_expressions/generated_expression')
+require("cucumber/cucumber_expressions/generated_expression")
 
 module Cucumber
   module CucumberExpressions
-
     class CombinatorialGeneratedExpressionFactory
       def initialize(expression_template, parameter_type_combinations)
         @expression_template = expression_template
@@ -37,13 +36,12 @@ module Cucumber
           new_current_parameter_types = current_parameter_types.dup # clone
           new_current_parameter_types.push(@parameter_type_combinations[depth][i])
           generate_permutations(
-              generated_expressions,
-              depth + 1,
-              new_current_parameter_types
+            generated_expressions,
+            depth + 1,
+            new_current_parameter_types
           )
         end
       end
     end
-
   end
 end

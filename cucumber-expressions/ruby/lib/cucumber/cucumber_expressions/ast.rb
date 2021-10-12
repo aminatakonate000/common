@@ -1,16 +1,16 @@
 module Cucumber
   module CucumberExpressions
-    ESCAPE_CHARACTER = '\\'
-    ALTERNATION_CHARACTER = '/'
-    BEGIN_PARAMETER_CHARACTER = '{'
-    END_PARAMETER_CHARACTER = '}'
-    BEGIN_OPTIONAL_CHARACTER = '('
-    END_OPTIONAL_CHARACTER = ')'
+    ESCAPE_CHARACTER = "\\"
+    ALTERNATION_CHARACTER = "/"
+    BEGIN_PARAMETER_CHARACTER = "{"
+    END_PARAMETER_CHARACTER = "}"
+    BEGIN_OPTIONAL_CHARACTER = "("
+    END_OPTIONAL_CHARACTER = ")"
 
     class Node
       def initialize(type, nodes, token, start, _end)
         if nodes.nil? && token.nil?
-          raise 'Either nodes or token must be defined'
+          raise "Either nodes or token must be defined"
         end
         @type = type
         @nodes = nodes
@@ -19,35 +19,25 @@ module Cucumber
         @end = _end
       end
 
-      def type
-        @type
-      end
+      attr_reader :type
 
-      def nodes
-        @nodes
-      end
+      attr_reader :nodes
 
-      def token
-        @token
-      end
+      attr_reader :token
 
-      def start
-        @start
-      end
+      attr_reader :start
 
-      def end
-        @end
-      end
+      attr_reader :end
 
       def text
         if @token.nil?
-          return @nodes.map { |value| value.text }.join('')
+          return @nodes.map { |value| value.text }.join("")
         end
         @token
       end
 
       def to_hash
-        hash = Hash.new
+        hash = {}
         hash["type"] = @type
         unless @nodes.nil?
           hash["nodes"] = @nodes.map { |node| node.to_hash }
@@ -62,35 +52,26 @@ module Cucumber
     end
 
     module NodeType
-      TEXT = 'TEXT_NODE'
-      OPTIONAL = 'OPTIONAL_NODE'
-      ALTERNATION = 'ALTERNATION_NODE'
-      ALTERNATIVE = 'ALTERNATIVE_NODE'
-      PARAMETER = 'PARAMETER_NODE'
-      EXPRESSION = 'EXPRESSION_NODE'
+      TEXT = "TEXT_NODE"
+      OPTIONAL = "OPTIONAL_NODE"
+      ALTERNATION = "ALTERNATION_NODE"
+      ALTERNATIVE = "ALTERNATIVE_NODE"
+      PARAMETER = "PARAMETER_NODE"
+      EXPRESSION = "EXPRESSION_NODE"
     end
-
 
     class Token
       def initialize(type, text, start, _end)
         @type, @text, @start, @end = type, text, start, _end
       end
 
-      def type
-        @type
-      end
+      attr_reader :type
 
-      def text
-        @text
-      end
+      attr_reader :text
 
-      def start
-        @start
-      end
+      attr_reader :start
 
-      def end
-        @end
-      end
+      attr_reader :end
 
       def self.is_escape_character(codepoint)
         codepoint.chr(Encoding::UTF_8) == ESCAPE_CHARACTER
@@ -98,7 +79,7 @@ module Cucumber
 
       def self.can_escape(codepoint)
         c = codepoint.chr(Encoding::UTF_8)
-        if c == ' '
+        if c == " "
           # TODO: Unicode whitespace?
           return true
         end
@@ -122,7 +103,7 @@ module Cucumber
 
       def self.type_of(codepoint)
         c = codepoint.chr(Encoding::UTF_8)
-        if c == ' '
+        if c == " "
           # TODO: Unicode whitespace?
           return TokenType::WHITE_SPACE
         end
@@ -145,57 +126,57 @@ module Cucumber
       def self.symbol_of(token)
         case token
         when TokenType::BEGIN_OPTIONAL
-          return BEGIN_OPTIONAL_CHARACTER
+          BEGIN_OPTIONAL_CHARACTER
         when TokenType::END_OPTIONAL
-          return END_OPTIONAL_CHARACTER
+          END_OPTIONAL_CHARACTER
         when TokenType::BEGIN_PARAMETER
-          return BEGIN_PARAMETER_CHARACTER
+          BEGIN_PARAMETER_CHARACTER
         when TokenType::END_PARAMETER
-          return END_PARAMETER_CHARACTER
+          END_PARAMETER_CHARACTER
         when TokenType::ALTERNATION
-          return ALTERNATION_CHARACTER
+          ALTERNATION_CHARACTER
         else
-          return ''
+          ""
         end
       end
 
       def self.purpose_of(token)
         case token
         when TokenType::BEGIN_OPTIONAL
-          return 'optional text'
+          "optional text"
         when TokenType::END_OPTIONAL
-          return 'optional text'
+          "optional text"
         when TokenType::BEGIN_PARAMETER
-          return 'a parameter'
+          "a parameter"
         when TokenType::END_PARAMETER
-          return 'a parameter'
+          "a parameter"
         when TokenType::ALTERNATION
-          return 'alternation'
+          "alternation"
         else
-          return ''
+          ""
         end
       end
 
       def to_hash
         {
-            "type" => @type,
-            "text" => @text,
-            "start" => @start,
-            "end" => @end
+          "type" => @type,
+          "text" => @text,
+          "start" => @start,
+          "end" => @end
         }
       end
     end
 
     module TokenType
-      START_OF_LINE = 'START_OF_LINE'
-      END_OF_LINE = 'END_OF_LINE'
-      WHITE_SPACE = 'WHITE_SPACE'
-      BEGIN_OPTIONAL = 'BEGIN_OPTIONAL'
-      END_OPTIONAL = 'END_OPTIONAL'
-      BEGIN_PARAMETER = 'BEGIN_PARAMETER'
-      END_PARAMETER = 'END_PARAMETER'
-      ALTERNATION = 'ALTERNATION'
-      TEXT = 'TEXT'
+      START_OF_LINE = "START_OF_LINE"
+      END_OF_LINE = "END_OF_LINE"
+      WHITE_SPACE = "WHITE_SPACE"
+      BEGIN_OPTIONAL = "BEGIN_OPTIONAL"
+      END_OPTIONAL = "END_OPTIONAL"
+      BEGIN_PARAMETER = "BEGIN_PARAMETER"
+      END_PARAMETER = "END_PARAMETER"
+      ALTERNATION = "ALTERNATION"
+      TEXT = "TEXT"
     end
   end
 end

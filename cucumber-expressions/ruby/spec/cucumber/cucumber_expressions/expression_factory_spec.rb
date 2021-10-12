@@ -1,4 +1,4 @@
-require 'cucumber/cucumber_expressions/expression_factory'
+require "cucumber/cucumber_expressions/expression_factory"
 
 module Cucumber
   module CucumberExpressions
@@ -7,12 +7,12 @@ module Cucumber
         @expression_factory = ExpressionFactory.new(ParameterTypeRegistry.new)
       end
 
-      it 'creates a RegularExpression' do
+      it "creates a RegularExpression" do
         expect(@expression_factory.create_expression(/x/).class).to eq(RegularExpression)
       end
 
-      it 'creates a CucumberExpression' do
-        expect(@expression_factory.create_expression('{int}').class).to eq(CucumberExpression)
+      it "creates a CucumberExpression" do
+        expect(@expression_factory.create_expression("{int}").class).to eq(CucumberExpression)
       end
     end
   end

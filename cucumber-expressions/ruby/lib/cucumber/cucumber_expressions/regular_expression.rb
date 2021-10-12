@@ -1,11 +1,10 @@
-require 'cucumber/cucumber_expressions/argument'
-require 'cucumber/cucumber_expressions/parameter_type'
-require 'cucumber/cucumber_expressions/tree_regexp'
+require "cucumber/cucumber_expressions/argument"
+require "cucumber/cucumber_expressions/parameter_type"
+require "cucumber/cucumber_expressions/tree_regexp"
 
 module Cucumber
   module CucumberExpressions
     class RegularExpression
-
       def initialize(expression_regexp, parameter_type_registry)
         @expression_regexp = expression_regexp
         @parameter_type_registry = parameter_type_registry
@@ -23,7 +22,7 @@ module Cucumber
             nil,
             parameter_type_regexp,
             String,
-            lambda {|*s| s[0]},
+            lambda { |*s| s[0] },
             false,
             false
           )

@@ -1,6 +1,6 @@
-require 'cucumber/cucumber_expressions/cucumber_expression'
-require 'cucumber/cucumber_expressions/regular_expression'
-require 'cucumber/cucumber_expressions/parameter_type_registry'
+require "cucumber/cucumber_expressions/cucumber_expression"
+require "cucumber/cucumber_expressions/regular_expression"
+require "cucumber/cucumber_expressions/parameter_type_registry"
 
 module Cucumber
   module CucumberExpressions
@@ -48,12 +48,12 @@ module Cucumber
         parameter_type_registry = ParameterTypeRegistry.new
         ### [add-color-parameter-type]
         parameter_type_registry.define_parameter_type(ParameterType.new(
-            'color',                   # name
-            /red|blue|yellow/,         # regexp
-            Color,                     # type
-            lambda {|s| Color.new(s)}, # transform
-            true,                      # use_for_snippets
-            false                      # prefer_for_regexp_match
+          "color", # name
+          /red|blue|yellow/, # regexp
+          Color, # type
+          lambda { |s| Color.new(s) }, # transform
+          true, # use_for_snippets
+          false # prefer_for_regexp_match
         ))
         ### [add-color-parameter-type]
         @parameter_type_registry = parameter_type_registry
@@ -62,12 +62,12 @@ module Cucumber
       it "throws exception for illegal character in parameter name" do
         expect do
           ParameterType.new(
-              '[string]',
-              /.*/,
-              String,
-              lambda {|s| s},
-              true,
-              false
+            "[string]",
+            /.*/,
+            String,
+            lambda { |s| s },
+            true,
+            false
           )
         end.to raise_error("Illegal character in parameter name {[string]}. Parameter names may not contain '[]()$.|?*+'")
       end
@@ -76,24 +76,24 @@ module Cucumber
         it "matches parameters with custom parameter type" do
           expression = CucumberExpression.new("I have a {color} ball", @parameter_type_registry)
           transformed_argument_value = expression.match("I have a red ball")[0].value(nil)
-          expect(transformed_argument_value).to eq(Color.new('red'))
+          expect(transformed_argument_value).to eq(Color.new("red"))
         end
 
         it "matches parameters with multiple capture groups" do
           @parameter_type_registry.define_parameter_type(ParameterType.new(
-              'coordinate',
-              /(\d+),\s*(\d+),\s*(\d+)/,
-              Coordinate,
-              lambda {|x, y, z| Coordinate.new(x.to_i, y.to_i, z.to_i)},
-              true,
-              false
+            "coordinate",
+            /(\d+),\s*(\d+),\s*(\d+)/,
+            Coordinate,
+            lambda { |x, y, z| Coordinate.new(x.to_i, y.to_i, z.to_i) },
+            true,
+            false
           ))
 
           expression = CucumberExpression.new(
-              'A {int} thick line from {coordinate} to {coordinate}',
-              @parameter_type_registry
+            "A {int} thick line from {coordinate} to {coordinate}",
+            @parameter_type_registry
           )
-          args = expression.match('A 5 thick line from 10,20,30 to 40,50,60')
+          args = expression.match("A 5 thick line from 10,20,30 to 40,50,60")
 
           thick = args[0].value(nil)
           expect(thick).to eq(5)
@@ -108,65 +108,65 @@ module Cucumber
         it "matches parameters with custom parameter type using optional capture group" do
           parameter_type_registry = ParameterTypeRegistry.new
           parameter_type_registry.define_parameter_type(ParameterType.new(
-              'color',
-              [/red|blue|yellow/, /(?:dark|light) (?:red|blue|yellow)/],
-              Color,
-              lambda {|s| Color.new(s)},
-              true,
-              false
+            "color",
+            [/red|blue|yellow/, /(?:dark|light) (?:red|blue|yellow)/],
+            Color,
+            lambda { |s| Color.new(s) },
+            true,
+            false
           ))
           expression = CucumberExpression.new("I have a {color} ball", parameter_type_registry)
           transformed_argument_value = expression.match("I have a dark red ball")[0].value(nil)
-          expect(transformed_argument_value).to eq(Color.new('dark red'))
+          expect(transformed_argument_value).to eq(Color.new("dark red"))
         end
 
         it "defers transformation until queried from argument" do
           @parameter_type_registry.define_parameter_type(ParameterType.new(
-              'throwing',
-              /bad/,
-              CssColor,
-              lambda {|s| raise "Can't transform [#{s}]"},
-              true,
-              false
+            "throwing",
+            /bad/,
+            CssColor,
+            lambda { |s| raise "Can't transform [#{s}]" },
+            true,
+            false
           ))
           expression = CucumberExpression.new("I have a {throwing} parameter", @parameter_type_registry)
           args = expression.match("I have a bad parameter")
-          expect {args[0].value(nil)}.to raise_error("Can't transform [bad]")
+          expect { args[0].value(nil) }.to raise_error("Can't transform [bad]")
         end
 
         describe "conflicting parameter type" do
           it "is detected for type name" do
             expect {
               @parameter_type_registry.define_parameter_type(ParameterType.new(
-                  'color',
-                  /.*/,
-                  CssColor,
-                  lambda {|s| CssColor.new(s)},
-                  true,
-                  false
+                "color",
+                /.*/,
+                CssColor,
+                lambda { |s| CssColor.new(s) },
+                true,
+                false
               ))
             }.to raise_error("There is already a parameter with name color")
           end
 
           it "is not detected for type" do
             @parameter_type_registry.define_parameter_type(ParameterType.new(
-                'whatever',
-                /.*/,
-                Color,
-                lambda {|s| Color.new(s)},
-                false,
-                false
+              "whatever",
+              /.*/,
+              Color,
+              lambda { |s| Color.new(s) },
+              false,
+              false
             ))
           end
 
           it "is not detected for regexp" do
             @parameter_type_registry.define_parameter_type(ParameterType.new(
-                'css-color',
-                /red|blue|yellow/,
-                CssColor,
-                lambda {|s| CssColor.new(s)},
-                true,
-                false
+              "css-color",
+              /red|blue|yellow/,
+              CssColor,
+              lambda { |s| CssColor.new(s) },
+              true,
+              false
             ))
 
             css_color = CucumberExpression.new("I have a {css-color} ball", @parameter_type_registry)
@@ -184,17 +184,17 @@ module Cucumber
         it "matches arguments with custom parameter type without name" do
           parameter_type_registry = ParameterTypeRegistry.new
           parameter_type_registry.define_parameter_type(ParameterType.new(
-              nil,
-              /red|blue|yellow/,
-              Color,
-              lambda {|s| Color.new(s)},
-              true,
-              false
+            nil,
+            /red|blue|yellow/,
+            Color,
+            lambda { |s| Color.new(s) },
+            true,
+            false
           ))
 
           expression = RegularExpression.new(/I have a (red|blue|yellow) ball/, parameter_type_registry)
           value = expression.match("I have a red ball")[0].value(nil)
-          expect(value).to eq(Color.new('red'))
+          expect(value).to eq(Color.new("red"))
         end
       end
     end

@@ -2,18 +2,18 @@ Before() do
   # no-op
 end
 
-Before('@beforeHook') do
+Before("@beforeHook") do
   # no-op
 end
 
-Before('@failBeforeHook') do
-  raise 'Woops !'
+Before("@failBeforeHook") do
+  raise "Woops !"
 end
 
-After('@afterHook') do
+After("@afterHook") do
   # no-op
 end
 
-Given('a passed step') do
+Given("a passed step") do
   # no-op
 end

@@ -1,9 +1,9 @@
-require 'json'
-require 'rspec'
-require 'cucumber/messages'
+require "json"
+require "rspec"
+require "cucumber/messages"
 
-require_relative 'lib/messages_comparator'
-require_relative 'lib/keys_checker'
+require_relative "lib/messages_comparator"
+require_relative "lib/keys_checker"
 
 def message_type(message)
   message.to_hash.keys.first
@@ -14,7 +14,7 @@ def parse_ndjson(path)
 end
 
 def debug_lists(expected, obtained)
-  return unless ENV['VERBOSE']
+  return unless ENV["VERBOSE"]
   return if expected.sort == obtained.sort
 
   to_read = expected.count > obtained.count ? expected : obtained
@@ -22,12 +22,12 @@ def debug_lists(expected, obtained)
 
   puts "    | Expected #{columnize} GOT"
   to_read.each_with_index do |_, index|
-    ok = expected[index] == obtained[index] ? 'v' : 'x'
+    ok = expected[index] == obtained[index] ? "v" : "x"
     puts "[#{ok}] | #{expected[index]} #{columnize} #{obtained[index]}"
   end
 end
 
-RSpec.shared_examples 'equivalent messages' do
+RSpec.shared_examples "equivalent messages" do
   # Note: to use those examples, you need to define:
   # let(:original) { 'path to .ndjson file in CCK' }
   # let(:generated) { 'path to generated .ndjson file' }
@@ -38,14 +38,14 @@ RSpec.shared_examples 'equivalent messages' do
   let(:original_messages_types) { parsed_original.map { |msg| message_type(msg) } }
   let(:generated_messages_types) { parsed_generated.map { |msg| message_type(msg) } }
 
-  it 'identical message types' do
+  it "identical message types" do
     debug_lists(original_messages_types, generated_messages_types)
     expect(generated_messages_types).to contain_exactly(*original_messages_types)
   end
 
-  it 'identical individual message structure' do
+  it "identical individual message structure" do
     comparator = CCK::MessagesComparator.new(CCK::KeysChecker, parsed_generated, parsed_original)
-    comparator.debug if ENV['VERBOSE']
+    comparator.debug if ENV["VERBOSE"]
 
     if comparator.errors.any?
       fail "There were comparison errors: #{comparator.errors}"

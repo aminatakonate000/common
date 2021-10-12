@@ -7,7 +7,6 @@ module Cucumber
         end
 
         module ClassMethods
-
           ##
           # Makes an underscored, lowercase form from the expression in the string.
           #

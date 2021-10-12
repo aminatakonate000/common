@@ -13,7 +13,7 @@ module Gherkin
     end
 
     def start_with_title_keyword?(keyword)
-      start_with?(keyword+':') # The C# impl is more complicated. Find out why.
+      start_with?(keyword + ":") # The C# impl is more complicated. Find out why.
     end
 
     def get_rest_trimmed(length)
@@ -36,10 +36,10 @@ module Gherkin
     def table_cells
       cells = []
 
-      self.split_table_cells(@trimmed_line_text) do |item, column|
+      split_table_cells(@trimmed_line_text) do |item, column|
         # Keeps new lines
-        txt_trimmed_left = item.sub(/\A[ \t\v\f\r\u0085\u00A0]*/, '')
-        txt_trimmed = txt_trimmed_left.sub(/[ \t\v\f\r\u0085\u00A0]*\z/, '')
+        txt_trimmed_left = item.sub(/\A[ \t\v\f\r\u0085\u00A0]*/, "")
+        txt_trimmed = txt_trimmed_left.sub(/[ \t\v\f\r\u0085\u00A0]*\z/, "")
         cell_indent = item.length - txt_trimmed_left.length
         span = Span.new(@indent + column + cell_indent, txt_trimmed)
         cells.push(span)
@@ -51,27 +51,27 @@ module Gherkin
     def split_table_cells(row)
       col = 0
       start_col = col + 1
-      cell = ''
+      cell = ""
       first_cell = true
       while col < row.length
         char = row[col]
         col += 1
-        if char == '|'
+        if char == "|"
           if first_cell
             # First cell (content before the first |) is skipped
             first_cell = false
           else
             yield cell, start_col
           end
-          cell = ''
+          cell = ""
           start_col = col + 1
-        elsif char == '\\'
+        elsif char == "\\"
           char = row[col]
           col += 1
-          if char == 'n'
+          if char == "n"
             cell += "\n"
           else
-            cell += '\\' unless ['|', '\\'].include?(char)
+            cell += "\\" unless ["|", "\\"].include?(char)
             cell += char
           end
         else
@@ -82,9 +82,9 @@ module Gherkin
     end
 
     def tags
-      uncommented_line = @trimmed_line_text.split(/\s#/,2)[0]
+      uncommented_line = @trimmed_line_text.split(/\s#/, 2)[0]
       column = @indent + 1
-      items = uncommented_line.split('@')
+      items = uncommented_line.split("@")
 
       tags = []
       items.each { |untrimmed|
@@ -93,12 +93,12 @@ module Gherkin
           next
         end
 
-        unless item =~ /^\S+$/
-          location = { line: @line_number, column: column }
-          raise ParserException.new('A tag may not contain whitespace', location)
+        unless /^\S+$/.match?(item)
+          location = {line: @line_number, column: column}
+          raise ParserException.new("A tag may not contain whitespace", location)
         end
 
-        tags << Span.new(column, '@' + item)
+        tags << Span.new(column, "@" + item)
         column += untrimmed.length + 1
       }
       tags

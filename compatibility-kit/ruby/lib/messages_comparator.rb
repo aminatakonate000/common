@@ -1,4 +1,4 @@
-require_relative 'keys_checker'
+require_relative "keys_checker"
 
 module CCK
   class MessagesComparator

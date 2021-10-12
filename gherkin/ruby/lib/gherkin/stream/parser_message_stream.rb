@@ -1,7 +1,7 @@
-require 'cucumber/messages'
-require_relative '../parser'
-require_relative '../token_matcher'
-require_relative '../pickles/compiler'
+require "cucumber/messages"
+require_relative "../parser"
+require_relative "../token_matcher"
+require_relative "../pickles/compiler"
 
 module Gherkin
   module Stream
@@ -70,8 +70,8 @@ module Gherkin
           @paths.each do |path|
             source = Cucumber::Messages::Source.new(
               uri: path,
-              data: File.open(path, 'r:UTF-8', &:read),
-              media_type: 'text/x.cucumber.gherkin+plain'
+              data: File.open(path, "r:UTF-8", &:read),
+              media_type: "text/x.cucumber.gherkin+plain"
             )
             y.yield(source)
           end

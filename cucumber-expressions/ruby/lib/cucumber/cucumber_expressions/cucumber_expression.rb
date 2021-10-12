@@ -1,12 +1,11 @@
-require 'cucumber/cucumber_expressions/argument'
-require 'cucumber/cucumber_expressions/tree_regexp'
-require 'cucumber/cucumber_expressions/errors'
-require 'cucumber/cucumber_expressions/cucumber_expression_parser'
+require "cucumber/cucumber_expressions/argument"
+require "cucumber/cucumber_expressions/tree_regexp"
+require "cucumber/cucumber_expressions/errors"
+require "cucumber/cucumber_expressions/cucumber_expression_parser"
 
 module Cucumber
   module CucumberExpressions
     class CucumberExpression
-
       ESCAPE_PATTERN = /([\\^\[({$.|?*+})\]])/
 
       def initialize(expression, parameter_type_registry)
@@ -40,20 +39,20 @@ module Cucumber
       def rewrite_to_regex(node)
         case node.type
         when NodeType::TEXT
-          return escape_regex(node.text)
+          escape_regex(node.text)
         when NodeType::OPTIONAL
-          return rewrite_optional(node)
+          rewrite_optional(node)
         when NodeType::ALTERNATION
-          return rewrite_alternation(node)
+          rewrite_alternation(node)
         when NodeType::ALTERNATIVE
-          return rewrite_alternative(node)
+          rewrite_alternative(node)
         when NodeType::PARAMETER
-          return rewrite_parameter(node)
+          rewrite_parameter(node)
         when NodeType::EXPRESSION
-          return rewrite_expression(node)
+          rewrite_expression(node)
         else
           # Can't happen as long as the switch case is exhaustive
-          raise "#{node.type}"
+          raise node.type.to_s
         end
       end
 
@@ -65,7 +64,7 @@ module Cucumber
         assert_no_parameters(node) { |astNode| raise ParameterIsNotAllowedInOptional.new(astNode, @expression) }
         assert_no_optionals(node) { |astNode| raise OptionalIsNotAllowedInOptional.new(astNode, @expression) }
         assert_not_empty(node) { |astNode| raise OptionalMayNotBeEmpty.new(astNode, @expression) }
-        regex = node.nodes.map { |n| rewrite_to_regex(n) }.join('')
+        regex = node.nodes.map { |n| rewrite_to_regex(n) }.join("")
         "(?:#{regex})?"
       end
 
@@ -77,12 +76,12 @@ module Cucumber
           end
           assert_not_empty(alternative) { |astNode| raise AlternativeMayNotExclusivelyContainOptionals.new(astNode, @expression) }
         }
-        regex = node.nodes.map { |n| rewrite_to_regex(n) }.join('|')
+        regex = node.nodes.map { |n| rewrite_to_regex(n) }.join("|")
         "(?:#{regex})"
       end
 
       def rewrite_alternative(node)
-        node.nodes.map { |lastNode| rewrite_to_regex(lastNode) }.join('')
+        node.nodes.map { |lastNode| rewrite_to_regex(lastNode) }.join("")
       end
 
       def rewrite_parameter(node)
@@ -96,11 +95,11 @@ module Cucumber
         if regexps.length == 1
           return "(#{regexps[0]})"
         end
-        "((?:#{regexps.join(')|(?:')}))"
+        "((?:#{regexps.join(")|(?:")}))"
       end
 
       def rewrite_expression(node)
-        regex = node.nodes.map { |n| rewrite_to_regex(n) }.join('')
+        regex = node.nodes.map { |n| rewrite_to_regex(n) }.join("")
         "^#{regex}$"
       end
 

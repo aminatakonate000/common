@@ -1,12 +1,12 @@
-require 'stringio'
-require 'cucumber/messages'
-require 'cucumber_demo_formatter'
+require "stringio"
+require "cucumber/messages"
+require "cucumber_demo_formatter"
 
 describe CucumberDemoFormatter do
   it "prints a smiley for a passed step" do
     input = StringIO.new
 
-    %w{UNKNOWN PASSED SKIPPED PENDING UNDEFINED AMBIGUOUS FAILED}.each do |status|
+    %w[UNKNOWN PASSED SKIPPED PENDING UNDEFINED AMBIGUOUS FAILED].each do |status|
       input.write({
         testStepFinished: {
           testStepResult: {
@@ -27,6 +27,6 @@ describe CucumberDemoFormatter do
 
     output.rewind
     s = output.read
-    expect(s).to eq('👽😃🥶⏰🤷🦄💣')
+    expect(s).to eq("👽😃\u{1F976}⏰🤷🦄💣")
   end
 end

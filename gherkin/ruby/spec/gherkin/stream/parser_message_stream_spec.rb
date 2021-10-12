@@ -1,5 +1,5 @@
-require 'rspec'
-require 'gherkin/stream/parser_message_stream'
+require "rspec"
+require "gherkin/stream/parser_message_stream"
 
 module Gherkin
   module Stream
@@ -12,15 +12,15 @@ module Gherkin
 
       let(:source_feature) {
         Cucumber::Messages::Source.new(
-          uri: '//whatever/uri',
+          uri: "//whatever/uri",
           data: feature_content,
-          media_type: 'text/x.cucumber.gherkin+plain'
+          media_type: "text/x.cucumber.gherkin+plain"
         )
       }
 
       let(:options) {
         {
-          include_gherkin_document: true,
+          include_gherkin_document: true
         }
       }
 
@@ -30,7 +30,7 @@ module Gherkin
 
       let(:scenario_id) { gherkin_document.feature.children.first.scenario.id }
 
-      context '#messages' do
+      context "#messages" do
         it "raises an exception on second iteration" do
           messages = ParserMessageStream.new([], [source_feature], options).messages
 
@@ -39,15 +39,14 @@ module Gherkin
         end
       end
 
-      context 'options.id_generator' do
-        context 'when not set' do
-          it 'generates random UUIDs' do
-            expect(scenario_id).to match(/[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}/)
+      context "options.id_generator" do
+        context "when not set" do
+          it "generates random UUIDs" do
+            expect(scenario_id).to match(/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}/)
           end
         end
 
-
-        context 'when set' do
+        context "when set" do
           let(:id_generator) { double }
           let(:options) {
             {
@@ -56,9 +55,9 @@ module Gherkin
             }
           }
 
-          it 'uses the generator instance to produce the IDs' do
-            allow(id_generator).to receive(:new_id).and_return('some-random-id')
-            expect(scenario_id).to eq('some-random-id')
+          it "uses the generator instance to produce the IDs" do
+            allow(id_generator).to receive(:new_id).and_return("some-random-id")
+            expect(scenario_id).to eq("some-random-id")
           end
         end
       end

@@ -1,4 +1,4 @@
-require 'cucumber/messages.deserializers'
+require "cucumber/messages.deserializers"
 
 module Cucumber
   module Messages

@@ -1,10 +1,10 @@
-require 'json'
-require 'set'
+require "json"
+require "set"
 
 # This script can be used to update the test data when the ciDict.json file is modified.
 # After running this script, the testdata should be inspected and updated manually
 
-ciDict = JSON.parse(File.read(File.dirname(__FILE__) + '/ciDict.json'))
+ciDict = JSON.parse(File.read(File.dirname(__FILE__) + "/ciDict.json"))
 
 def collect_vars(ob, env_vars)
   ob.each do |key, val|
@@ -21,25 +21,25 @@ def collect_vars(ob, env_vars)
 end
 
 ciDict.each do |name, ci|
-  filename = "testdata/#{name.gsub(/\s/, '')}.txt"
+  filename = "testdata/#{name.gsub(/\s/, "")}.txt"
   puts "--- #{filename}"
   txt_file_env_vars = []
   if File.exist?(filename)
     File.read(filename).each_line do |line|
-      txt_file_env_vars.push(line.strip.split('='))
+      txt_file_env_vars.push(line.strip.split("="))
     end
   end
   used_env_vars = Set.new
   collect_vars(ci, used_env_vars)
   used_env_vars.to_a.sort.each do |used_env_var|
-    exists = txt_file_env_vars.detect { |pair| pair[0] == used_env_var}
+    exists = txt_file_env_vars.detect { |pair| pair[0] == used_env_var }
     if !exists
-      txt_file_env_vars.push([used_env_var, '???'])
+      txt_file_env_vars.push([used_env_var, "???"])
     end
   end
   File.open(filename, "w:UTF-8") do |io|
     txt = txt_file_env_vars.map do |pair|
-      pair.join('=')
+      pair.join("=")
     end.join("\n") + "\n"
     io.write(txt)
   end

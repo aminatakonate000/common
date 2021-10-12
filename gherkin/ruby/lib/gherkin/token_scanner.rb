@@ -1,6 +1,6 @@
-require 'stringio'
-require_relative 'token'
-require_relative 'gherkin_line'
+require "stringio"
+require_relative "token"
+require_relative "gherkin_line"
 
 module Gherkin
   # The scanner reads a gherkin doc (typically read from a .feature file) and
@@ -14,7 +14,7 @@ module Gherkin
     def initialize(source_or_io)
       @line_number = 0
 
-      case(source_or_io)
+      case source_or_io
       when String
         @io = StringIO.new(source_or_io)
       when StringIO, IO
@@ -35,6 +35,5 @@ module Gherkin
         Token.new(nil, location)
       end
     end
-
   end
 end

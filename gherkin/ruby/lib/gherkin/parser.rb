@@ -110,7 +110,7 @@ module Gherkin
       end
     end
 
-    def get_result()
+    def get_result
       @ast_builder.get_result
     end
 

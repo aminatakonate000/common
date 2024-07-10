@@ -16,3 +16,4 @@ backports.shutil_which; python_version <= '3.3'
 
 # -- CLEANUP SUPPORT: py.cleanup
 pycmd
+zipp>=3.19.1 # not directly required, pinned by Snyk to avoid a vulnerability

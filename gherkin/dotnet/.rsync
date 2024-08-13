@@ -1,6 +1,0 @@
-../LICENSE LICENSE
-../../.templates/github/ .github/
-../../.templates/dotnet/ .
-../testdata/ testdata/
-../gherkin.berp gherkin.berp
-../gherkin-languages.json Gherkin/gherkin-languages.json

@@ -1,7 +1,0 @@
-acceptance/
-.built
-.compared
-.pipped
-*.pyc
-dist/
-build/
